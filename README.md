@@ -18,10 +18,19 @@ The funnel has two halves: The top half narrows while the bottom half widens. Wh
 ## Status
 
 - **Milestone 1** — Model and architecture ✅
-- **Milestone 2** — Interactive build 🔜
+- **Milestone 2** — Interactive build in progress ✅
 - **Milestone 3** — A second way to read the funnel: not stage by stage, but across stages simultaneously. The relationships between parts of the system that no single-stage view can reveal.🔜
 - **Milestone 3+** — From diagnosis to decision. Given what the system is showing, what do you do about it — and where does the lever sit?🔜
 
 ## Stack (Milestone 2)
 
 React · Vite · SVG · Framer Motion · Tailwind · Vercel
+
+## Local development
+
+1. Install dependencies:
+   - `npm install`
+2. Start local server:
+   - `npm run dev`
+3. Build for production:
+   - `npm run build`
