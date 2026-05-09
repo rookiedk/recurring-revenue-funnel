@@ -1,8 +1,25 @@
 {
   "name": "recurring-revenue-funnel",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
+  "description": "Interactive B2B SaaS recurring revenue funnel: stage-by-stage and full-system views with VL3/VL2/VL1 lenses.",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rookiedk/recurring-revenue-funnel.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rookiedk/recurring-revenue-funnel/issues"
+  },
+  "homepage": "https://github.com/rookiedk/recurring-revenue-funnel#readme",
+  "keywords": [
+    "saas",
+    "revenue",
+    "funnel",
+    "b2b",
+    "visualization",
+    "react"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
