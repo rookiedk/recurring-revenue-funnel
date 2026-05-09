@@ -9,14 +9,23 @@ const BARS = [
   { id: "F", width: 340 },
 ];
 
-export default function FunnelDiagram({ activeStage, onStageSelect, stages }) {
+export default function FunnelDiagram({
+  activeStage,
+  onStageSelect,
+  stages,
+  readingMode = "byStage",
+}) {
   return (
     <div className="overflow-x-auto">
       <svg
         viewBox="0 0 640 740"
         className="h-[640px] w-full min-w-[620px] rounded-xl bg-slate-900/40 p-2"
         role="img"
-        aria-label="Revenue funnel diagram"
+        aria-label={
+          readingMode === "acrossStages"
+            ? "Revenue funnel diagram, system view"
+            : "Revenue funnel diagram"
+        }
       >
         <line x1="70" y1="365" x2="570" y2="365" stroke="#334155" strokeWidth="2" />
         <text x="320" y="355" textAnchor="middle" fill="#94a3b8" fontSize="12">
@@ -26,6 +35,7 @@ export default function FunnelDiagram({ activeStage, onStageSelect, stages }) {
         {BARS.map((bar, index) => {
           const stage = stages[index];
           const isActive = activeStage === stage.id;
+          const inactiveOpacity = readingMode === "acrossStages" ? 0.88 : 0.75;
           const barHeight = 74;
           const gap = 30;
           const commitGap = 56;
@@ -48,7 +58,7 @@ export default function FunnelDiagram({ activeStage, onStageSelect, stages }) {
                 rx="10"
                 animate={{
                   fill: isActive ? "#6ea8fe" : "#334155",
-                  opacity: isActive ? 1 : 0.75,
+                  opacity: isActive ? 1 : inactiveOpacity,
                 }}
                 transition={{ duration: 0.2 }}
               />

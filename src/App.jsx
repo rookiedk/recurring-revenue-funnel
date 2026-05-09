@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import CrossStagePanel from "./components/CrossStagePanel";
 import FunnelDiagram from "./components/FunnelDiagram";
 import MetricsPanel from "./components/MetricsPanel";
 
@@ -60,6 +61,7 @@ const METRICS_BY_LENS = {
 };
 
 export default function App() {
+  const [readingMode, setReadingMode] = useState("byStage");
   const [activeLens, setActiveLens] = useState("vl1");
   const [activeStage, setActiveStage] = useState("A");
 
@@ -78,30 +80,81 @@ export default function App() {
 
   return (
     <main className="min-h-screen bg-ink text-slate-100">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 p-6 lg:flex-row">
-        <section className="flex-1 rounded-2xl border border-slate-700/50 bg-panel p-4 shadow-2xl">
-          <header className="mb-4 flex flex-wrap items-center justify-between gap-3">
-            <h1 className="text-xl font-semibold">Recurring Revenue Funnel</h1>
-          </header>
-          <p className="mb-4 text-xs text-slate-400">
-            Lens hierarchy: VL3 (leading signals) -&gt; VL2 (economics) -&gt; VL1 (outcomes)
-          </p>
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 p-6">
+        <div
+          className={`flex flex-col gap-6 ${readingMode === "byStage" ? "lg:flex-row" : ""}`}
+        >
+          <section
+            className={`rounded-2xl border border-slate-700/50 bg-panel p-4 shadow-2xl ${
+              readingMode === "byStage" ? "flex-1" : "w-full"
+            }`}
+          >
+            <header className="mb-4 flex flex-wrap items-center justify-between gap-3">
+              <h1 className="text-xl font-semibold">Recurring Revenue Funnel</h1>
+              <div
+                className="flex rounded-lg border border-slate-700 p-0.5"
+                role="group"
+                aria-label="Reading mode"
+              >
+                <button
+                  type="button"
+                  onClick={() => setReadingMode("byStage")}
+                  className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
+                    readingMode === "byStage"
+                      ? "bg-accent/25 text-accent"
+                      : "text-slate-400 hover:text-slate-200"
+                  }`}
+                >
+                  By stage
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setReadingMode("acrossStages")}
+                  className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
+                    readingMode === "acrossStages"
+                      ? "bg-accent/25 text-accent"
+                      : "text-slate-400 hover:text-slate-200"
+                  }`}
+                >
+                  Across stages
+                </button>
+              </div>
+            </header>
+            <p className="mb-4 text-xs text-slate-400">
+              Lens hierarchy: VL3 (leading signals) -&gt; VL2 (economics) -&gt; VL1 (outcomes)
+            </p>
 
-          <FunnelDiagram
-            activeStage={activeStage}
-            onStageSelect={setActiveStage}
+            <FunnelDiagram
+              activeStage={activeStage}
+              onStageSelect={setActiveStage}
+              stages={STAGES}
+              readingMode={readingMode}
+            />
+          </section>
+
+          {readingMode === "byStage" ? (
+            <MetricsPanel
+              activeLens={activeLens}
+              activeStage={activeStage}
+              activeStageName={activeStageName}
+              lenses={LENSES}
+              metricsByLensForStage={metricsByLensForStage}
+              onLensSelect={setActiveLens}
+            />
+          ) : null}
+        </div>
+
+        {readingMode === "acrossStages" ? (
+          <CrossStagePanel
             stages={STAGES}
+            lenses={LENSES}
+            metricsByLens={METRICS_BY_LENS}
+            activeLens={activeLens}
+            activeStage={activeStage}
+            onLensSelect={setActiveLens}
+            onStageSelect={setActiveStage}
           />
-        </section>
-
-        <MetricsPanel
-          activeLens={activeLens}
-          activeStage={activeStage}
-          activeStageName={activeStageName}
-          lenses={LENSES}
-          metricsByLensForStage={metricsByLensForStage}
-          onLensSelect={setActiveLens}
-        />
+        ) : null}
       </div>
     </main>
   );
